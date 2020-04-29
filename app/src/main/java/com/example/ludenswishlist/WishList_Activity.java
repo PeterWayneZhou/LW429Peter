@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +26,8 @@ public class WishList_Activity extends AppCompatActivity {
     public ArrayList<Game> games=new ArrayList<>();
     private GamesAdapter gamesAdapter;
 
+    //private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //private DatabaseReference AddToWishList = database.getReference("Game");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +48,25 @@ public class WishList_Activity extends AppCompatActivity {
     private void initialData() {
         //games = new ArrayList<>();
         Intent receivingIntent = getIntent();
-        Game g = (Game)receivingIntent.getSerializableExtra(Keys.GAME_TOWISHLIST);
-        games.add(g);
+        //Game g = (Game)receivingIntent.getSerializableExtra(Keys.GAME_TOWISHLIST);
+
+        FirebaseDatabase.getInstance().getReference().child("Game")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Game game = snapshot.getValue(Game.class);
+                            //System.out.println(game.gameName);
+                          // games.add(new Game())
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+
+       // games.add(g);
     }
 
 

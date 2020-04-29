@@ -13,10 +13,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 
 public class Game_Activity extends AppCompatActivity {
 
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference AddToWishList = database.getReference("Game");
     private TextView gameName;
     private TextView gameRelease;
     private TextView platform;
@@ -66,11 +71,16 @@ public class Game_Activity extends AppCompatActivity {
         gameImage2.setImageDrawable(icon);
         TextView introduction=findViewById(R.id.bioBody);
         introduction.setText(gameBio);
+
+
+        //AddToWishList.setValue("Beyonce");
+
     }
 
     public void toWishList(View view) {
         Intent intent = new Intent(this, WishList_Activity.class);
         intent.putExtra(Keys.GAME_TOWISHLIST, g);
+        AddToWishList.child(g.getGameName()).setValue(g);
         startActivity(intent);
     }
 

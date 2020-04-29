@@ -13,6 +13,7 @@ public class Game implements Serializable {
     public String releaseDate;
     public boolean wantToPlay;
     public String bio;
+    public int index;
 
     //constructor for sharing
     public Game(String gameName, String releaseDate, String platform, int pic) {
@@ -27,6 +28,7 @@ public class Game implements Serializable {
 
     //constructor for creating the whole array list of games
     public Game(int index, String gameName, String genre, String platform, String studio, String releaseDate, int gameId, int gameId2, String bio, String newsLink) {
+        this.index = index;
         this.gameName = gameName;
         this.genre = genre;
         this.platform = platform;
