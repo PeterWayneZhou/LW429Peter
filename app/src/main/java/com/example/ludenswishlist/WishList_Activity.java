@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +17,15 @@ import java.util.List;
 
 public class WishList_Activity extends AppCompatActivity {
 
-    private List<Game> games;
+    public ArrayList<Game> games=new ArrayList<>();
     private GamesAdapter gamesAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Luden's Wishlist - WISHLIST");
+        setTitle("Luden's Wishlist");
         getIntent();
 
         initialData();
@@ -36,8 +38,10 @@ public class WishList_Activity extends AppCompatActivity {
     }
 
     private void initialData() {
-        games = new ArrayList<>();
-       // games.add(new Game("Darksiders: Genesis", "Action", "PS4, XB1, PC", "THQ Nordic", "2.14.2020", "aaa", R.drawable.ic_class_black_24dp));
+        //games = new ArrayList<>();
+        Intent receivingIntent = getIntent();
+        Game g = (Game)receivingIntent.getSerializableExtra(Keys.GAME_TOWISHLIST);
+        games.add(g);
     }
 
 
@@ -61,8 +65,6 @@ public class WishList_Activity extends AppCompatActivity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
-
-
                 return true;
 
             default:

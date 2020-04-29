@@ -4,22 +4,54 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.io.Serializable;
 
 public class Game_Activity extends AppCompatActivity {
+
+    private TextView gameName;
+    private TextView gameRelease;
+    private TextView platform;
+
+    public TextView gameGenre;
+    public TextView gameStudio;
+    public ImageView gamePhoto;
+
+    public String title;
+    public String console; // platform
+    public String genre;
+    public String date; //releaseDate
+    public String studio;
+    public int pic1; //for passing on to wish list
+    public int pic2; //for detail page
+    public String gameBio;
+    public Game g;
+    public String newsPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_);
         Intent receivedIntent=getIntent();
-        String title=receivedIntent.getStringExtra("KEY_NAME");
-        String console=receivedIntent.getStringExtra("KEY_CONSOLE");
-        String genre=receivedIntent.getStringExtra("KEY_GENRE");
-        String date=receivedIntent.getStringExtra("KEY_DATE");
-        int pic=receivedIntent.getIntExtra("KEY_PIC",0);
+        g=(Game)receivedIntent.getSerializableExtra(Keys.GAME_WHOLE);
+        title=g.getGameName();
+        console=g.getPlatform();
+        genre=g.getGenre();
+        date=g.getReleaseDate();
+        studio=g.getStudio();
+        pic1=g.getGameId();
+        pic2=g.getGameId2();
+        gameBio=g.getBio();
+        newsPage=g.getNewsLink();
+
         TextView gameTitle= findViewById(R.id.gameTitle);
         gameTitle.setText(title);
         TextView gamePlatform= findViewById(R.id.gamePlatform);
@@ -28,16 +60,24 @@ public class Game_Activity extends AppCompatActivity {
         gameGenre.setText(genre);
         TextView gameRelease=findViewById(R.id.gameReleaseDate);
         gameRelease.setText(date);
-        ImageView gameImage=findViewById(R.id.gameImage);
-        Drawable icon=getResources().getDrawable(pic, getTheme());
-        gameImage.setImageDrawable(icon);
+        Drawable profileIcon=getResources().getDrawable(pic1, getTheme());
+        Drawable icon=getResources().getDrawable(pic2, getTheme());
+        ImageView gameImage2=findViewById(R.id.gameImage);
+        gameImage2.setImageDrawable(icon);
+        TextView introduction=findViewById(R.id.bioBody);
+        introduction.setText(gameBio);
     }
 
-}
+    public void toWishList(View view) {
+        Intent intent = new Intent(this, WishList_Activity.class);
+        intent.putExtra(Keys.GAME_TOWISHLIST, g);
+        startActivity(intent);
+    }
 
-//intent.putExtra("KEY_NAME", gameTitle);
-//                intent.putExtra("KEY_CONSOLE", console);
-//                intent.putExtra("KEY_GENRE", type);
-//                intent.putExtra("KEY_DATE", when);
-//                intent.putExtra("KEY_STUDIO", creator);
-//                intent.putExtra("KEY_PIC", image);
+    public void toNewsPage(View view){
+        String url=newsPage;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
+}

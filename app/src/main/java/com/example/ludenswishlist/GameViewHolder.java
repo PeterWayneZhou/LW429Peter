@@ -39,17 +39,5 @@ public class GameViewHolder extends RecyclerView.ViewHolder {
         gamePhoto = (ImageView) itemView.findViewById(R.id.game_image_view);
         detailButton= itemView.findViewById(R.id.detail_button);
         shareButton = (Button) itemView.findViewById(R.id.share_button);
-
-
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-   //             Toast.makeText(context, gameName.getText(), Toast.LENGTH_SHORT).show();
-    //            Intent intent = new Intent(this, Game_Activity.class);
-      //          String user_name = "Jhon Doe";
-        //        intent.putExtra("USER_NAME", user_name);
-            }
-        });
-
     }
 }
