@@ -20,8 +20,8 @@ import java.io.Serializable;
 
 public class Game_Activity extends AppCompatActivity {
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference AddToWishList = database.getReference("Game");
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public DatabaseReference AddToWishList = database.getReference("Game");
     private TextView gameName;
     private TextView gameRelease;
     private TextView platform;

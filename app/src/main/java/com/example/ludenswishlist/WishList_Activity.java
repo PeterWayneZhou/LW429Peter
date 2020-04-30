@@ -24,10 +24,11 @@ import java.util.List;
 public class WishList_Activity extends AppCompatActivity {
 
     public ArrayList<Game> games=new ArrayList<>();
+    public ArrayList<String> fullGames=new ArrayList<>(); // 这个arraylist含有10个游戏的名称，用来逐条检索database里边有没有对应游戏.
     private GamesAdapter gamesAdapter;
 
-    //private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    //private DatabaseReference AddToWishList = database.getReference("Game");
+    //private FirebaseDatabase database = FirebaseDatabase.getInstance();  Game_Activity那边已经设置好database了，这边再设置一次，会不会变成两个了？
+    //private DatabaseReference AddToWishList = database.getReference("Game"); 是再重设一遍吗？不会抹除game activity那边设好的database吗？
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,27 +44,47 @@ public class WishList_Activity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         gamesAdapter = new GamesAdapter(games, this);
         recyclerView.setAdapter(gamesAdapter);
+
+        fullGames.add("Darksiders: Genesis");
+        fullGames.add("Two Point Hospital");
+        fullGames.add("Nioh 2");
+        fullGames.add("Animal Crossing: New Horizons");
+        fullGames.add("Mount & Blade II: Bannerlord");
+        fullGames.add("Resident Evil 3: Remake");
+        fullGames.add("Final Fantasy VII: Remake");
+        fullGames.add("Ghost of Tsushima");
+        fullGames.add("Marvel's The Avengers");
+        fullGames.add("Cyberpunk 2077");
     }
 
     private void initialData() {
         //games = new ArrayList<>();
         Intent receivingIntent = getIntent();
         //Game g = (Game)receivingIntent.getSerializableExtra(Keys.GAME_TOWISHLIST);
+        int i;
+        for(i=0; i<9; i++){
+          String forSearchOnDatabase=fullGames.get(i);
+            FirebaseDatabase.getInstance().getReference().child("Game").child(forSearchOnDatabase)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()) { //这里是也许要加一个这个if condition,这样的话一个个检索应该不会出读不出东西的bug
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Game game = snapshot.getValue(Game.class); //确定这一部可以成功成database的数据生成一个game object吗？
+                                    //System.out.println(game.gameName);
+                                    // games.add(new Game()) 也许不用按照你语音说的去code parameter
+                                    //games.add(game)应该就足够了
 
-        FirebaseDatabase.getInstance().getReference().child("Game")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Game game = snapshot.getValue(Game.class);
-                            //System.out.println(game.gameName);
-                          // games.add(new Game())
+
+                                }
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        }
+
 
 
        // games.add(g);
