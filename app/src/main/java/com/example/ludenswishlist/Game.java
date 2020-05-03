@@ -11,9 +11,12 @@ public class Game implements Serializable {
     public String platform;
     public String studio;
     public String releaseDate;
-    public boolean wantToPlay;
+    //public boolean wantToPlay;
     public String bio;
     public int index;
+
+    public Game() {
+    }
 
     //constructor for sharing
     public Game(String gameName, String releaseDate, String platform, int pic) {

@@ -10,9 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.annotations.Nullable;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +31,41 @@ public class GamesAdapter extends Adapter<GameViewHolder> implements Serializabl
     public GamesAdapter(List<Game> games, Context context) {
         this.games = games;
         this.context = context;
+    }
+
+    public GamesAdapter(DatabaseReference gamesRef, Context context) {
+        this.context = context;
+        games = new ArrayList<>();
+        gamesRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Game g = dataSnapshot.getValue(Game.class);
+                games.add(g);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Game p = dataSnapshot.getValue(Game.class);
+                games.remove(p);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

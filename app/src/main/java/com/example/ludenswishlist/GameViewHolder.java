@@ -30,14 +30,15 @@ public class GameViewHolder extends RecyclerView.ViewHolder {
 
     public GameViewHolder(View itemView, final Context context) {
         super(itemView);
-        cardView = (CardView) itemView.findViewById(R.id.card_view);
-        gameName = (TextView) itemView.findViewById(R.id.game_name_view);
-        gameGenre = (TextView) itemView.findViewById(R.id.game_genre_view);
-        gamePlatform = (TextView) itemView.findViewById(R.id.game_platform_view);
-        gameReleaseDate = (TextView) itemView.findViewById(R.id.game_releaseDate_view);
-        gameStudio = (TextView) itemView.findViewById(R.id.game_studio_view);
-        gamePhoto = (ImageView) itemView.findViewById(R.id.game_image_view);
+        cardView = itemView.findViewById(R.id.card_view);
+        gameName = itemView.findViewById(R.id.game_name_view);
+        gameGenre = itemView.findViewById(R.id.game_genre_view);
+        gamePlatform = itemView.findViewById(R.id.game_platform_view);
+        gameReleaseDate = itemView.findViewById(R.id.game_releaseDate_view);
+        gameStudio = itemView.findViewById(R.id.game_studio_view);
+        gamePhoto = itemView.findViewById(R.id.game_image_view);
         detailButton= itemView.findViewById(R.id.detail_button);
-        shareButton = (Button) itemView.findViewById(R.id.share_button);
+        shareButton = itemView.findViewById(R.id.share_button);
     }
+
 }
